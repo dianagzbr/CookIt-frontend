@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, TextInput } from "reac
 import Colors from "../../Utils/Colors";
 
 
-export default function Login(){
+export default function Login({ navigation }){
     const [isChecked, setIsChecked] = useState(false);
 
     const toggleCheckbox = () => {
@@ -75,12 +75,16 @@ export default function Login(){
                         Iniciar sesión
                     </Text>
                 </TouchableOpacity>
-                <Text style={{textAlign:'center', padding:20}}>
-                    ¿No tienes una cuenta? Registrate
-                </Text>
-                <Text style={{textAlign:'center', padding:10}}>
-                    Omitir Inicio de sesión
-                </Text>
+                <TouchableOpacity onPress={() => navigation.navigate("signup")}>
+                    <Text style={{textAlign:'center', padding:20}}>
+                        ¿No tienes una cuenta? Registrate
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("home")}>
+                    <Text style={{textAlign:'center', padding:10}}>
+                        Omitir Inicio de sesión
+                    </Text>
+                </TouchableOpacity>
             </View>
         </View>
     );

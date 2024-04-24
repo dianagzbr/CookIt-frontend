@@ -3,16 +3,17 @@ import { StyleSheet, Text, View } from 'react-native';
 import Login from './App/Screens/LoginScreen/Login';
 import Colors from './App/Utils/Colors';
 import Signup from './App/Screens/SignupScreen/Signup';
+import { NavigationContainer } from '@react-navigation/native';
+import StackNavigation from './App/Navigations/StackNavigation';
 
 
 export default function App() {
 
   console.log('Hola perro')
   return (
-    <View style={styles.container}>
-      <Signup/>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <StackNavigation />
+    </NavigationContainer>
   );
 }
 

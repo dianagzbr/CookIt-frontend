@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, TextInput } from "reac
 import Colors from "../../Utils/Colors";
 
 
-export default function Signup(){
+export default function Signup({ navigation }){
 
     return (
         <View style={{ alignItems: 'center' }}>
@@ -47,12 +47,16 @@ export default function Signup(){
                        Registrarse
                     </Text>
                 </TouchableOpacity>
-                <Text style={{textAlign:'center', padding:20}}>
-                    ¿Ya tienes una cuenta? Inicia sesión
-                </Text>
-                <Text style={{textAlign:'center', padding:10}}>
-                    Omitir Registro
-                </Text>
+                <TouchableOpacity onPress={()  => navigation.navigate("login")}>
+                    <Text style={{textAlign:'center', padding:20}}>
+                        ¿Ya tienes una cuenta? Inicia sesión
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("home")}>
+                    <Text style={{textAlign:'center', padding:10}}>
+                        Omitir Registro
+                    </Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
