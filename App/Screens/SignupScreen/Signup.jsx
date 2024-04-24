@@ -3,12 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, TextInput } from "reac
 import Colors from "../../Utils/Colors";
 
 
-export default function Login(){
-    const [isChecked, setIsChecked] = useState(false);
-
-    const toggleCheckbox = () => {
-        setIsChecked(!isChecked);
-    };
+export default function Signup(){
 
     return (
         <View style={{ alignItems: 'center' }}>
@@ -20,10 +15,10 @@ export default function Login(){
                               fontWeight: 'bold', 
                               textAlign: 'center' }}
                 >
-                    Log in
+                    Registro
                 </Text>
 
-                <TextInput placeholder="Nombre de Usuario" 
+                <TextInput placeholder="Correo electronico" 
                            style={styles.input} 
                            keyboardType="default" 
                            autoCapitalize="none" 
@@ -35,34 +30,11 @@ export default function Login(){
                            autoCapitalize="none" 
                 />
 
-                <View style={{flexDirection:'row', 
-                             justifyContent:'space-between', 
-                             alignItems:'center'}}
-                >
-                    <TouchableOpacity onPress={toggleCheckbox} 
-                                      style={{flexDirection: 'row', 
-                                              alignItems: 'center' }}
-                    >
-                        <View style={[styles.checkbox, 
-                                      isChecked ? 
-                                      styles.checked : null]} 
-                        />
-                        <Text style={{fontSize: 15, 
-                                      color: Colors.GREY, 
-                                      marginLeft: 8 }}
-                        >
-                            Recuérdame
-                        </Text>
-                    </TouchableOpacity>
-
-                    <Text style={{fontSize: 15, 
-                                  color: Colors.GREY, 
-                                  textAlign: 'right', 
-                                  padding: 20 }}
-                    >
-                        Restaurar contraseña
-                    </Text>
-                </View>
+                <TextInput placeholder="Confirmar contraseña" 
+                           style={styles.input} 
+                           secureTextEntry={true} 
+                           autoCapitalize="none" 
+                />
 
                 <TouchableOpacity style={styles.button} 
                                   onPress={() => console.log("button clicked")}
@@ -72,14 +44,14 @@ export default function Login(){
                                   fontWeight: 'bold', 
                                   color: Colors.WHITE }}
                     >
-                        Iniciar sesión
+                       Registrarse
                     </Text>
                 </TouchableOpacity>
                 <Text style={{textAlign:'center', padding:20}}>
-                    ¿No tienes una cuenta? Registrate
+                    ¿Ya tienes una cuenta? Inicia sesión
                 </Text>
                 <Text style={{textAlign:'center', padding:10}}>
-                    Omitir Inicio de sesión
+                    Omitir Registro
                 </Text>
             </View>
         </View>
