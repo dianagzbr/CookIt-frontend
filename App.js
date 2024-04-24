@@ -10,7 +10,7 @@ export default function App() {
   console.log('Hola perro')
   return (
     <View style={styles.container}>
-      <Login/>
+      <Signup/>
       <StatusBar style="auto" />
     </View>
   );
