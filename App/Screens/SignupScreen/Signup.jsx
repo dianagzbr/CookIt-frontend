@@ -6,7 +6,7 @@ import Colors from "../../Utils/Colors";
 export default function Signup({ navigation }){
 
     return (
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: 'center', backgroundColor:Colors.PRIMARY }}>
             <Image source={require('./../../../assets/comida3.jpg')} style={styles.loginImage} 
             />
             <View style={styles.subContainer}>

@@ -11,7 +11,7 @@ export default function Login({ navigation }){
     };
 
     return (
-        <View style={{ alignItems: 'center' }}>
+        <View style={{alignItems: 'center', backgroundColor: Colors.PRIMARY }}>
             <Image source={require('./../../../assets/comida3.jpg')} style={styles.loginImage} 
             />
             <View style={styles.subContainer}>
@@ -55,6 +55,7 @@ export default function Login({ navigation }){
                         </Text>
                     </TouchableOpacity>
 
+                <TouchableOpacity onPress={() => navigation.navigate("rstpass")}>
                     <Text style={{fontSize: 15, 
                                   color: Colors.GREY, 
                                   textAlign: 'right', 
@@ -62,6 +63,7 @@ export default function Login({ navigation }){
                     >
                         Restaurar contraseña
                     </Text>
+                </TouchableOpacity>    
                 </View>
 
                 <TouchableOpacity style={styles.button} 
