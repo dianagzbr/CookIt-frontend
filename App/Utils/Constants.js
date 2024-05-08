@@ -44,7 +44,7 @@ export const recipeData = [
             receta: 1
           }
         ],
-        ingredientes: [1, 2],
+        ingredientes: "[1, 2]",
         nombre_receta: "Hamburguesa",
         calorias: 500,
         origen_receta: "Estados Unidos",
@@ -139,7 +139,7 @@ export const recipeData = [
             receta: 6
           }
         ],
-        ingredientes: [1, 2],
+        ingredientes: [1,2],
         nombre_receta: "Tiramisú",
         calorias: 500,
         origen_receta: "Italia",

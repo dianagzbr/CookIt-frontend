@@ -2,11 +2,14 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import react from "react";
 import {FontAwesome} from "@expo/vector-icons";
 import Colors from "../Utils/Colors";
+import { useNavigation } from "@react-navigation/native";
 
-const Header = ({drawerIcon, headerText, headerIcon, onDrawerPress}) => {
+
+const Header = ({drawerIcon, headerText, headerIcon}) => {
+    const navigation = useNavigation();
     return(
         <View style={{flexDirection:"row"}}>
-            <TouchableOpacity onPress={onDrawerPress}>
+            <TouchableOpacity onPress={() => navigation.navigate("favorites")}>
                 <FontAwesome name={drawerIcon} size={24} color={Colors.BLACK}/>
             </TouchableOpacity>
             <Text style={{ textAlign: 'center', flex:1, fontSize:28, fontWeight:"700"}}>

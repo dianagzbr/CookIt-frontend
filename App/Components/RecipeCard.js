@@ -23,7 +23,7 @@ const RecipeCard = ({}) => {
                             elevation: 5,
                             marginVertical: 16,
                             alignItems: 'center',
-                            paddingHorizontal: 8,
+                            paddingHorizontal: 10,
                             paddingVertical: 26,
                             justifyContent: 'center',
                         }}
@@ -31,15 +31,14 @@ const RecipeCard = ({}) => {
                         <Image source={item.imagenes[0].imagen} 
                                style={styles.imageHS}
                         />
-                        <Text>{item.nombre_receta}</Text>
+                        <Text style={{fontWeight:'bold', marginTop:2}}>{item.nombre_receta}</Text>
                         <View style={{flexDirection:"row", marginTop:5}}>
                             <Text>{item.calorias} cal</Text>
                             <Text> | </Text>
-                            <View>
-                                <Text>{item.tiempo}</Text>
-                                <View style={{flexDirection: 'row', }}>
-                                    <Text style={{marginRight: 4}}>{item.calificacion}</Text>
-                                    <FontAwesome name="star" size={16} color={Colors.BLACK}/>
+                            <View style={{flexDirection: "row", paddingHorizontal:2}}>
+                                <Text>{item.tiempo} | {item.calificacion}</Text>
+                                <View style={{flexDirection: "row", marginHorizontal:2, marginTop:3.7}}>
+                                    <FontAwesome name="star" size={13} color={Colors.BLACK}/>
                                 </View>
                             </View>
                         </View>

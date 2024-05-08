@@ -5,6 +5,7 @@ import HomeScreen from "../Screens/HomeScreen/HomeScreen"
 import RstPassword from "../Screens/RestorePasswordScreen/RstPassword";
 import RecipeDetails from "../Screens/Recipe/RecipeDetails";
 import Colors from "../Utils/Colors";
+import Favorites from "../Screens/FavoriteScreen/Favorites";
 
 const Stack = createStackNavigator();
 
@@ -36,8 +37,14 @@ const StackNavigation = () => {
         component={RecipeDetails}
         options={{ headerTitle: null }}
       />
+      <Stack.Screen
+        name="favorites"
+        component={Favorites}
+        options={{ headerTitle: null }}
+      />
     </Stack.Navigator>
   );
 };
+
 
 export default StackNavigation;
