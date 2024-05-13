@@ -1,20 +1,46 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 import Input from "../../Components/forms/Input";
 import Button from "../../Components/forms/Button";
 import GoogleLogin from "../../Components/forms/GoogleLogin";
 import Colors from "../../Utils/Colors";
-import Google from "../../../assets/google.png"
 
 export default function Signup({ navigation }) {
+  const [data, setData] = useState({
+    username: "",
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    re_password: "" 
+  });
+
+  const handleChange = (field, value) => {
+    setData((prevData) => ({ ...prevData, [field]: value }));
+  };
+
+  const handleSubmit = async () => {
+    console.log(data);
+
+    try {
+      const response = await fetch("http://192.168.1.11:8000/auth/users/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+
+      const result = await response.json()
+
+      console.log(result)
+    } catch (error) {
+      console.log("Error: ", error)
+    }
+  };
+
   return (
-    <View style={{ alignItems: "center", backgroundColor: Colors.PRIMARY }}>
+    <ScrollView style={{ backgroundColor: Colors.PRIMARY }}>
       <Image
         source={require("./../../../assets/comida3.jpg")}
         style={styles.loginImage}
@@ -31,39 +57,64 @@ export default function Signup({ navigation }) {
           Registro
         </Text>
         <Input
+          name="username"
+          placeholder="Nombre de usuario"
+          keyboardType="default"
+          autoCapitalize="none"
+          onChangeText={(value) => handleChange("username", value)}
+          value={data.username}
+        />
+        <Input
+          name="first_name"
+          placeholder="Nombre"
+          keyboardType="default"
+          autoCapitalize="none"
+          onChangeText={(value) => handleChange("first_name", value)}
+          value={data.first_name}
+        />
+        <Input
+          name="last_name"
+          placeholder="Apellidos"
+          keyboardType="default"
+          autoCapitalize="none"
+          onChangeText={(value) => handleChange("last_name", value)}
+          value={data.last_name}
+        />
+        <Input
+          name="email"
           placeholder="Correo electronico"
           keyboardType="default"
           autoCapitalize="none"
+          onChangeText={(value) => handleChange("email", value)}
+          value={data.email}
         />
         <Input
+          name="password"
           placeholder="Contraseña"
           secureTextEntry={true}
           autoCapitalize="none"
+          onChangeText={(value) => handleChange("password", value)}
+          value={data.password}
         />
         <Input
+          name="repassword"
           placeholder="Confirmar contraseña"
           secureTextEntry={true}
           autoCapitalize="none"
+          onChangeText={(value) => handleChange("re_password", value)}
+          value={data.re_password}
         />
-        <Button
-          onPress={() => navigation.navigate("activation")}
-        >
-          Registrarse
-        </Button>
+        <Button onPress={handleSubmit}>Registrarse</Button>
         <Text style={styles.text}>O continua con</Text>
         <GoogleLogin />
         <TouchableOpacity onPress={() => navigation.navigate("login")}>
-          <Text style={styles.text}>
-            ¿Ya tienes una cuenta? Inicia sesión
-          </Text>
+          <Text style={styles.text}>¿Ya tienes una cuenta? Inicia sesión</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("home")}>
-          <Text style={styles.text}>
-            Omitir Registro
-          </Text>
+          <Text style={styles.text}>Omitir Registro</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -77,7 +128,7 @@ const styles = StyleSheet.create({
   text: {
     textAlign: "center",
     color: "#7F7979",
-    padding: 8
+    padding: 8,
   },
   subContainer: {
     width: "100%",
@@ -97,5 +148,5 @@ const styles = StyleSheet.create({
   checked: {
     backgroundColor: Colors.GREEN,
     borderColor: Colors.GREEN,
-  }
+  },
 });
