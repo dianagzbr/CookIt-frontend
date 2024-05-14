@@ -34,7 +34,7 @@ export default function Signup({ navigation }) {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch("http://192.168.1.11:8000/auth/users/", {
+      const response = await fetch("https://cookit-j5x3.onrender.com/auth/users/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
