@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  Image,
   StyleSheet,
   TouchableOpacity,
   StatusBar,
@@ -11,6 +10,7 @@ import Colors from "../../Utils/Colors";
 import Input from "../../Components/forms/Input";
 import Button from "../../Components/forms/Button";
 import GoogleLogin from "../../Components/forms/GoogleLogin";
+import ImageForm from "../../Components/forms/ImageForm";
 
 export default function Login({ navigation }) {
   const [isChecked, setIsChecked] = useState(false);
@@ -22,10 +22,7 @@ export default function Login({ navigation }) {
   return (
     <View style={{ alignItems: "center", backgroundColor: Colors.PRIMARY }}>
       <StatusBar translucent backgroundColor="transparent" />
-      <Image
-        source={require("./../../../assets/comida3.jpg")}
-        style={styles.loginImage}
-      />
+      <ImageForm />
       <View style={styles.subContainer}>
         <Text
           style={{
@@ -104,20 +101,12 @@ export default function Login({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  loginImage: {
-    width: 430,
-    height: 300,
-    borderBottomLeftRadius: 180,
-    borderBottomRightRadius: 180,
-  },
-
   subContainer: {
     width: "100%",
     height: "70%",
     backgroundColor: Colors.PRIMARY,
     padding: 20,
   },
-
   checkbox: {
     width: 24,
     height: 24,

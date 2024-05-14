@@ -1,18 +1,31 @@
 import React, { useState } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import Input from "../../Components/forms/Input";
 import Button from "../../Components/forms/Button";
 import GoogleLogin from "../../Components/forms/GoogleLogin";
+import ImageForm from "../../Components/forms/ImageForm";
 import Colors from "../../Utils/Colors";
+import ModalMessage from "../../Components/ModalMessage";
 
 export default function Signup({ navigation }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState({
     username: "",
     first_name: "",
     last_name: "",
     email: "",
     password: "",
-    re_password: "" 
+    re_password: "",
+  });
+  const [modalData, setModalData] = useState({
+    title: "",
+    content: "",
   });
 
   const handleChange = (field, value) => {
@@ -20,31 +33,42 @@ export default function Signup({ navigation }) {
   };
 
   const handleSubmit = async () => {
-    console.log(data);
-
     try {
       const response = await fetch("http://192.168.1.11:8000/auth/users/", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
-      })
+        body: JSON.stringify(data),
+      });
 
-      const result = await response.json()
+      const result = await response.json();
 
-      console.log(result)
+      if (response.status === 400) {
+        setModalData({
+          title: "Ha ocurrido un error",
+          content: `${Object.keys(result)[0]}: ${Object.values(result)[0]}`,
+        });
+        setIsModalOpen(true);
+      }
+
     } catch (error) {
-      console.log("Error: ", error)
+      console.log("Error: ", error);
     }
   };
 
   return (
     <ScrollView style={{ backgroundColor: Colors.PRIMARY }}>
-      <Image
-        source={require("./../../../assets/comida3.jpg")}
-        style={styles.loginImage}
-      />
+      <View style={{ alignItems: "center" }}>
+        <ImageForm />
+      </View>
+      <ModalMessage
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        title={modalData.title}
+      >
+        {modalData.content}
+      </ModalMessage>
       <View style={styles.subContainer}>
         <Text
           style={{
@@ -120,10 +144,9 @@ export default function Signup({ navigation }) {
 
 const styles = StyleSheet.create({
   loginImage: {
-    width: 430,
+    width: "120%",
     height: 300,
-    borderBottomLeftRadius: 180,
-    borderBottomRightRadius: 180,
+    borderRadius: 180,
   },
   text: {
     textAlign: "center",
