@@ -9,32 +9,77 @@ import {
 import Colors from "../../Utils/Colors";
 import Input from "../../Components/forms/Input";
 import Button from "../../Components/forms/Button";
+import ModalMessage from "../../Components/ModalMessage";
 import GoogleLogin from "../../Components/forms/GoogleLogin";
 import ImageForm from "../../Components/forms/ImageForm";
+import { CommonActions } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Login({ navigation }) {
   const [isChecked, setIsChecked] = useState(false);
+  const [formData, setFormData] = useState({})
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({
+    title: "",
+    content: "",
+  });
 
   const toggleCheckbox = () => {
     setIsChecked(!isChecked);
   };
 
-  const nose = async () => {
-    const url = "https://cookit-j5x3.onrender.com/auth/o/google-oauth2/?state=eaJR4BKLWKV6ePc6oBGEPoO8AmZSO91w&code=4%2F0AdLIrYfdNSQuX99i7MWaDjloK7PuSYg3MPitFem2MoBZ8pdVrTVtKeJahdl1ENVFPx2mGQ"
+  const handleChange = (field, value) =>  {
+    setFormData({...formData, [field]: value})
+  }
+
+  const handlesubmit = async () => {
+    const url = "https://cookit-j5x3.onrender.com/auth/jwt/create/"
+    const body = {
+      email: formData.email,
+      password: formData.password
+    }
+
     const response = await fetch(url, {
       method: "POST",
+      body: JSON.stringify(body),
       headers: {
         "Content-Type": "application/json"
       }
     })
 
-    const nose = await response.json()
-    console.log(nose)
+    if (response.status === 200) {
+      const data = await response.json()
+
+      await AsyncStorage.setItem("accessToken", data.access)
+      await AsyncStorage.setItem("refreshToken", data.refresh)
+
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "home" }]
+        })
+      )
+    } else {
+      result = await response.json()
+      setModalData({
+        title: "Ha ocurrido un error",
+        content: `${Object.keys(result)[0]}: ${Object.values(result)[0]}`,
+      });
+      setIsModalOpen(true);
+    }
+
   }
 
   return (
     <View style={{ alignItems: "center", backgroundColor: Colors.PRIMARY }}>
       <StatusBar translucent backgroundColor="transparent" />
+      <ModalMessage
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        title={modalData.title}
+      >
+        {modalData.content}
+      </ModalMessage>
       <ImageForm />
       <View style={styles.subContainer}>
         <Text
@@ -49,15 +94,19 @@ export default function Login({ navigation }) {
         </Text>
 
         <Input
-          placeholder="Nombre de Usuario"
+          placeholder="Correo electronico"
           keyboardType="default"
           autoCapitalize="none"
+          onChangeText={(value) => handleChange("email", value)}
+          value={formData.email}
         />
 
         <Input
           placeholder="Contraseña"
           secureTextEntry={true}
           autoCapitalize="none"
+          onChangeText={(value) => handleChange("password", value)}
+          value={formData.password}
         />
 
         <View
@@ -93,7 +142,7 @@ export default function Login({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        <Button onPress={nose}>
+        <Button onPress={handlesubmit}>
           Iniciar sesión
         </Button>
         <Text style={styles.text}>O continua con</Text>

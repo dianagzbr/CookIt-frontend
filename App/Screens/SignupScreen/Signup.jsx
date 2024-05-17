@@ -44,10 +44,16 @@ export default function Signup({ navigation }) {
 
       const result = await response.json();
 
-      if (response.status === 400) {
+      if (response.status !== 201) {
         setModalData({
           title: "Ha ocurrido un error",
           content: `${Object.keys(result)[0]}: ${Object.values(result)[0]}`,
+        });
+        setIsModalOpen(true);
+      } else {
+        setModalData({
+          title: "Registro exitoso",
+          content: "Revisa tu correo electronico para continuar",
         });
         setIsModalOpen(true);
       }
