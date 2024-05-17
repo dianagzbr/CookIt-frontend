@@ -5,6 +5,8 @@ import Colors from './App/Utils/Colors';
 import Signup from './App/Screens/SignupScreen/Signup';
 import { NavigationContainer } from '@react-navigation/native';
 import StackNavigation from './App/Navigations/StackNavigation';
+import DrawerNavigation from './App/Navigations/DrawerNavigation';
+
 
 
 export default function App() {

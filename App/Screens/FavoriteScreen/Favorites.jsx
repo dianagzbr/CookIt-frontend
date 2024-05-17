@@ -36,10 +36,7 @@ const styles = StyleSheet.create({
         height: '70%',
         backgroundColor: Colors.PRIMARY,
         padding: 20,
-        overflow: 'hidden', // Asegura que el contenido no sobresalga
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
-        elevation: 2,
-        flex:1
     },
 });

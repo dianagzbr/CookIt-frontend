@@ -9,7 +9,7 @@ const CategoriesFile = () => {
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {categories.map((category, index)=>{
                     return (
-                        <View style={{backgroundColor: index === 0 ? Colors.SECONDARY: Colors.PRIMARY,
+                        <View key={index} style={{backgroundColor: index === 0 ? Colors.SECONDARY: Colors.PRIMARY,
                                     marginRight: 27,
                                     borderRadius:25,
                                     paddingHorizontal: 16,
@@ -32,5 +32,3 @@ const CategoriesFile = () => {
 };
 
 export default CategoriesFile;
-
-const styles = StyleSheet.create({});

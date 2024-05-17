@@ -5,13 +5,10 @@ import Colors from "../Utils/Colors";
 import { useNavigation } from "@react-navigation/native";
 
 
-const Header = ({drawerIcon, headerText, headerIcon}) => {
+const Header = ({headerText, headerIcon}) => {
     const navigation = useNavigation();
     return(
         <View style={{flexDirection:"row"}}>
-            <TouchableOpacity onPress={() => navigation.navigate("favorites")}>
-                <FontAwesome name={drawerIcon} size={24} color={Colors.BLACK}/>
-            </TouchableOpacity>
             <Text style={{ textAlign: 'center', flex:1, fontSize:28, fontWeight:"700"}}>
                 {headerText}
             </Text>

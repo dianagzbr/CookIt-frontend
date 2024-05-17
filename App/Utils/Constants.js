@@ -52,7 +52,7 @@ export const recipeData = [
         dificultad: "Fácil",
         pasos: "1. Cocina la carne.\n 2. Arma la hamburguesa con los ingredientes. \n3. Disfruta.",
         tiempo: "20 min",
-        calificacion: "5"
+        calificacion: 5.0
       },
       {
         id: 2,
@@ -71,7 +71,7 @@ export const recipeData = [
         dificultad: "Intermedio",
         pasos: "1. Prepara la lechuga y los crutones. 2. Agrega el aderezo. 3. Mezcla bien.",
         tiempo: "20 min",
-        calificacion: "4.3"
+        calificacion: 4.3
       },
       {
         id: 3,
@@ -90,7 +90,7 @@ export const recipeData = [
         dificultad: "Media",
         pasos: "1. Cocina la carne. 2. Arma la hamburguesa con los ingredientes. 3. Disfruta.",
         tiempo: "20 min",
-        calificacion: "3.2"
+        calificacion: 3.2
       },
       {
         id: 4,
@@ -109,7 +109,7 @@ export const recipeData = [
         dificultad: "Alta",
         pasos: "1. Cocina la carne. 2. Arma la hamburguesa con los ingredientes. 3. Disfruta.",
         tiempo: "20 min",
-        calificacion: "3.9"
+        calificacion: 3.9
       },
       {
         id: 5,
@@ -128,7 +128,7 @@ export const recipeData = [
         dificultad: "Fácil",
         pasos: "1. Cocina la carne. 2. Arma la hamburguesa con los ingredientes. 3. Disfruta.",
         tiempo: "20 min",
-        calificacion: "3.6"
+        calificacion: 3.6
       },
       {
         id: 6,
@@ -147,7 +147,7 @@ export const recipeData = [
         dificultad: "Fácil",
         pasos: "1. Cocina la carne. 2. Arma la hamburguesa con los ingredientes. 3. Disfruta.",
         tiempo: "20 min",
-        calificacion: "5"
+        calificacion: 5.0
       },
       // Puedes agregar más recetas aquí
 ];
