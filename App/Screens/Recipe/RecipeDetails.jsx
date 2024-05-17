@@ -1,12 +1,26 @@
-import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, Alert} from "react-native";
 import react from "react";
 import Colors from "../../Utils/Colors";
 import {FontAwesome} from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const RecipeDetails = ({ route }) => {
+    const navigation = useNavigation();
+
     // Recupera los datos de la receta pasados desde la pantalla anterior
     const { item } = route.params;
   
+    const handleViewComments = () => {
+        //Navegacion a la pantalla de comentarios y calificaciones
+        navigation.navigate('comments', {recipeId: item.id});
+    }
+
+    const handleFavoritePress = () => {
+        //logica para añadir la receta
+        Alert.alert("Receta agregada a favoritos", `Has agregado ${item.nombre_receta} a tus favoritos.`);
+    }
+    
     return (
       <ScrollView style={{backgroundColor: Colors.PRIMARY}}>
         <View>
@@ -16,11 +30,19 @@ const RecipeDetails = ({ route }) => {
                 style={styles.image}
             />
             <View style={styles.favoriteIcon}>
-                <FontAwesome name="heart" size={24} color={Colors.WHITE} />
+                <TouchableOpacity onPress={handleFavoritePress}>
+                <FontAwesome name="heart" size={24} color={Colors.RED} />
+                </TouchableOpacity>
             </View>
             {/* Contenedor transparente para el nombre de la receta */}
             <View style={styles.overlay}>
                 <Text style={styles.name}>{item.nombre_receta}</Text>
+                <View style={{ flexDirection: 'row', marginLeft:'auto'}}>
+                    <Text style={{color: Colors.WHITE, fontSize: 23, paddingHorizontal:5}}>{item.calificacion}</Text>
+                    <TouchableOpacity onPress={handleViewComments}>
+                        <FontAwesome name="star" size={30} color={Colors.YELLOW}/>
+                    </TouchableOpacity>
+                </View>
             </View>
             <Text style={{color: Colors.GREY, paddingHorizontal: 10,  fontSize: 18 }}>{item.origen_receta}</Text>
             
@@ -71,6 +93,7 @@ const styles = StyleSheet.create({
         paddingVertical: 9,
         width: '100%', // Para que ocupe todo el ancho de la imagen
         justifyContent: 'flex-start', // Para alinear el texto a la derecha
+        flexDirection:'row',
     },
     info: {
         margin: 15,

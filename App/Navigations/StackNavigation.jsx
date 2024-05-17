@@ -5,7 +5,9 @@ import HomeScreen from "../Screens/HomeScreen/HomeScreen";
 import RstPassword from "../Screens/RestorePasswordScreen/RstPassword";
 import RecipeDetails from "../Screens/Recipe/RecipeDetails";
 import Colors from "../Utils/Colors";
-import Favorites from "../Screens/FavoriteScreen/Favorites";
+import DrawerNavigation from "./DrawerNavigation";
+import Comments from "../Screens/CommentsScreen/Comments";
+import Profile from "../Screens/ProfileScreen/Profile";
 import AccountActivation from "../Screens/AccountActivation/AccountActivation";
 
 const Stack = createStackNavigator();
@@ -37,23 +39,28 @@ const StackNavigation = () => {
       />
       <Stack.Screen
         name="home"
-        component={HomeScreen}
-        options={{ headerTitle: null }}
+        component={DrawerNavigation}
+        options={{  headerShown: false}}
       />
       <Stack.Screen
         name="rstpass"
         component={RstPassword}
-        options={{ headerTitle: null }}
+        options={{ title:' ' }}
       />
       <Stack.Screen
         name="recipe"
         component={RecipeDetails}
-        options={{ headerTitle: null }}
+        options={{ title:' ' }}
       />
       <Stack.Screen
-        name="favorites"
-        component={Favorites}
-        options={{ headerTitle: null }}
+        name="comments"
+        component={Comments}
+        options={{title:'Comentarios y calificación'}}
+      />
+      <Stack.Screen
+        name="profile"
+        component={Profile}
+        options={{title:'Perfil de usuario'}}
       />
     </Stack.Navigator>
   );

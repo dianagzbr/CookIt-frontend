@@ -8,11 +8,10 @@ import Colors from "../../Utils/Colors";
 import RecipeCard from "../../Components/RecipeCard";
 
 
-const HomeScreen = () => {
+const HomeScreen = (route) => {
     return(
         <SafeAreaView style={{flex:1, padding:15, backgroundColor: Colors.PRIMARY}}>
-
-            <Header drawerIcon={"navicon"} headerText={"CookIt!"} headerIcon={"bell-o"} />
+            <Header headerText={"CookIt!"} headerIcon={"bell-o"} />
             <SearchFilter icon="search" placeholder={"Buscar receta"} filterIcon={"list-ul"}/>
             <Image source={require('./../../../assets/Lasaña1.jpg')} style={styles.homeImage}/>
 
