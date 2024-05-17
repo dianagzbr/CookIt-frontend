@@ -19,6 +19,19 @@ export default function Login({ navigation }) {
     setIsChecked(!isChecked);
   };
 
+  const nose = async () => {
+    const url = "https://cookit-j5x3.onrender.com/auth/o/google-oauth2/?state=eaJR4BKLWKV6ePc6oBGEPoO8AmZSO91w&code=4%2F0AdLIrYfdNSQuX99i7MWaDjloK7PuSYg3MPitFem2MoBZ8pdVrTVtKeJahdl1ENVFPx2mGQ"
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+
+    const nose = await response.json()
+    console.log(nose)
+  }
+
   return (
     <View style={{ alignItems: "center", backgroundColor: Colors.PRIMARY }}>
       <StatusBar translucent backgroundColor="transparent" />
@@ -80,7 +93,7 @@ export default function Login({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        <Button onPress={() => console.log("button clicked")}>
+        <Button onPress={nose}>
           Iniciar sesión
         </Button>
         <Text style={styles.text}>O continua con</Text>

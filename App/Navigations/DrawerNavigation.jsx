@@ -20,7 +20,7 @@ const CustomDrawerContent = ({  ...rest }) => {
         <View style={{ alignItems: "center", paddingVertical: 20 }}>
           <TouchableOpacity onPress={() => navigation.navigate('profile')}>
             <Image
-              source={require('./../../../proyecto-prueba2/assets/Sadmouse.jpg')}
+              source={require('../../assets/Sadmouse.jpg')}
               style={{ width: 100, height: 100, borderRadius: 50 }}
             />
           </TouchableOpacity>
