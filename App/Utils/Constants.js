@@ -20,16 +20,8 @@ export const categories = [
         category: "Vegetariana",
     },
     {
-        id: 6,
-        category: "Italiana",
-    },
-    {
-        id: 7,
-        category: "Asiática",
-    },
-    {
-        id: 8,
-        category: "Mexicana",
+      id: 6,
+      category:  "Postre",
     },
         
 ];
@@ -48,7 +40,7 @@ export const recipeData = [
         nombre_receta: "Hamburguesa",
         calorias: 500,
         origen_receta: "Estados Unidos",
-        tipo_comida: "Almuerzo",
+        tipo_comida: "Desayuno",
         dificultad: "Fácil",
         pasos: "1. Cocina la carne.\n 2. Arma la hamburguesa con los ingredientes. \n3. Disfruta.",
         tiempo: "20 min",
@@ -67,7 +59,7 @@ export const recipeData = [
         nombre_receta: "Ensalada César",
         calorias: 300,
         origen_receta: "Italia",
-        tipo_comida: "Almuerzo",
+        tipo_comida: "Desayuno",
         dificultad: "Intermedio",
         pasos: "1. Prepara la lechuga y los crutones. 2. Agrega el aderezo. 3. Mezcla bien.",
         tiempo: "20 min",
@@ -124,7 +116,7 @@ export const recipeData = [
         nombre_receta: "Tacos de lentejas",
         calorias: 500,
         origen_receta: "Desconocido",
-        tipo_comida: "Almuerzo",
+        tipo_comida: "Desayuno",
         dificultad: "Fácil",
         pasos: "1. Cocina la carne. 2. Arma la hamburguesa con los ingredientes. 3. Disfruta.",
         tiempo: "20 min",
