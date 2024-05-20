@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, SafeAreaView, View, Text, Image } from "react-native";
+import { StyleSheet, SafeAreaView, View, Text, Image, Modal, TextInput, TouchableOpacity } from "react-native";
 import ScrollableHeader from 'react-native-scrollable-header';
 import Header from "../../Components/Header";
 import SearchFilter from "../../Components/SearchFilter";
@@ -45,13 +45,29 @@ const HomeScreen = () => {
     const filteredRecipes = recipes.filter(recipe => {
         const matchesCategory = selectedCategory ? recipe.categorias.some(categoria => categoria.id === selectedCategory) : true;
         const matchesSearchText = recipe.nombre_receta.toLowerCase().includes(searchText.toLowerCase());
-        return matchesCategory && matchesSearchText;
+        const matchesTime = filterValues.time ? recipe.tiempo_preparacion === filterValues.time : true;
+        const matchesOrigin = filterValues.origin ? recipe.origen_receta.toLowerCase() === filterValues.origin.toLowerCase() : true;
+        return matchesCategory && matchesSearchText && matchesTime && matchesOrigin;
     });
+
+    const handleFilterPress = () => {
+        setShowFilters(true);
+    };
+
+    const applyFilters = () => {
+        setShowFilters(false);
+    };
 
     return (
         <SafeAreaView style={{ flex: 1, padding: 15, backgroundColor: Colors.PRIMARY }}>
             <Header headerText={"CookIt!"} headerIcon={"bell-o"} />
-            <SearchFilter icon="search" placeholder={"Buscar receta"} filterIcon={"list-ul"} onSearch={setSearchText} />
+            <SearchFilter
+                icon="search"
+                placeholder={"Buscar receta"}
+                filterIcon={"list-ul"}
+                onSearch={setSearchText}
+                onFilterPress={handleFilterPress}
+            />
             <Image source={require('./../../../assets/Lasaña1.jpg')} style={styles.homeImage} />
 
             <View>
@@ -64,6 +80,34 @@ const HomeScreen = () => {
                     <RecipeCard recipes={filteredRecipes} />
                 )}
             </View>
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={showFilters}
+                onRequestClose={() => setShowFilters(false)}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalTitle}>Filtros de Búsqueda</Text>
+                        <TextInput
+                            style={styles.modalInput}
+                            placeholder="Tiempo (minutos)"
+                            onChangeText={value => setFilterValues(prevState => ({ ...prevState, time: value }))}
+                            value={filterValues.time}
+                        />
+                        <TextInput
+                            style={styles.modalInput}
+                            placeholder="Origen de la Receta (país)"
+                            onChangeText={value => setFilterValues(prevState => ({ ...prevState, origin: value }))}
+                            value={filterValues.origin}
+                        />
+                        <TouchableOpacity style={styles.button} onPress={applyFilters}>
+                            <Text style={styles.buttonText}>Aplicar filtros</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
         </SafeAreaView>
     );
 };
@@ -75,5 +119,40 @@ const styles = StyleSheet.create({
         width: 379,
         height: 143,
         borderRadius: 30
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.5)"
+    },
+    modalContent: {
+        backgroundColor: Colors.WHITE,
+        borderRadius: 20,
+        padding: 20,
+        width: "80%"
+    },
+    modalTitle: {
+        fontSize: 20,
+        fontWeight: "bold",
+        marginBottom: 10
+    },
+    modalInput: {
+        borderWidth: 1,
+        borderColor: Colors.GREY,
+        borderRadius: 10,
+        padding: 10,
+        marginBottom: 10
+    },
+    button: {
+        backgroundColor: Colors.SECONDARY,
+        padding: 15,
+        borderRadius: 10,
+        alignItems: "center",
+    },
+    buttonText: {
+        color: Colors.WHITE,
+        fontSize: 15,
+        fontWeight: "bold",
     },
 });

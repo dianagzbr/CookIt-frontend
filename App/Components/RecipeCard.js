@@ -27,7 +27,7 @@ const RecipeCard = ({ recipes }) => {
                             <Text>{item.calorias} cal</Text>
                             <Text> | </Text>
                             <View style={{ flexDirection: "row", paddingHorizontal: 2 }}>
-                                <Text>{item.tiempo} | {item.calificacion}</Text>
+                                <Text>{item.tiempo_preparacion} | {item.calificacion}</Text>
                                 <View style={{ flexDirection: "row", marginHorizontal: 2, marginTop: 3.7 }}>
                                     <FontAwesome name="star" size={13} color={Colors.YELLOW} />
                                 </View>
