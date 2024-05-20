@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -23,6 +23,24 @@ export default function Login({ navigation }) {
     title: "",
     content: "",
   });
+
+  useEffect(() => {
+    getSessionData()
+  }, [])
+
+  const getSessionData = async () => {
+    const accessToken = await AsyncStorage.getItem("accessToken")
+    const refreshToken = await AsyncStorage.getItem("refeshToken")
+
+    if (accessToken !== null) {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "home" }]
+        })
+      )
+    }
+  }
 
   const toggleCheckbox = () => {
     setIsChecked(!isChecked);
