@@ -2,26 +2,15 @@ import React, { useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../../Utils/Colors';
 
-const ShoppingList = ({ recipes }) => {
-  const [shoppingList, setShoppingList] = useState([]);
-
-  const generateShoppingList = () => {
-    const ingredientsList = {};
-
-    recipes.forEach((recipe) => {
-      recipe.ingredients.forEach((ingredient) => {
-        if (ingredientsList[ingredient.name]) {
-          ingredientsList[ingredient.name].quantity += ingredient.quantity;
-        } else {
-          ingredientsList[ingredient.name] = { ...ingredient };
-        }
-      });
-    });
-
-    const shoppingListArray = Object.values(ingredientsList);
-
-    setShoppingList(shoppingListArray);
-  };
+const ShoppingList = () => {
+  const [shoppingList, setShoppingList] = useState([
+    { name: 'Leche', quantity: 1, unit: 'litro', bought: false },
+    { name: 'Huevos', quantity: 6, unit: 'unidades', bought: false },
+    { name: 'Pan', quantity: 1, unit: 'barra', bought: false },
+    { name: 'Manzanas', quantity: 3, unit: 'unidades', bought: false },
+    { name: 'Arroz', quantity: 500, unit: 'gramos', bought: false },
+    { name: 'Pollo', quantity: 800, unit: 'gramos', bought: false },
+  ]);
 
   const toggleBought = (ingredientName) => {
     setShoppingList((prevShoppingList) =>
@@ -41,10 +30,10 @@ const ShoppingList = ({ recipes }) => {
         <Text style={styles.itemQuantity}>{item.quantity} {item.unit}</Text>
         <TouchableOpacity
           onPress={() => toggleBought(item.name)}
-          style={styles.toggleButton}
+          style={[styles.toggleButton, { backgroundColor: item.bought ? Colors.GREEN : Colors.SECONDARY }]}
         >
           <Text style={styles.toggleButtonText}>
-            {item.bought ? 'Marcar como no comprado' : 'Marcar como comprado'}
+            {item.bought ? 'Comprado' : 'Marcar como comprado'}
           </Text>
         </TouchableOpacity>
       </View>
@@ -59,6 +48,7 @@ const ShoppingList = ({ recipes }) => {
         renderItem={renderItem}
         keyExtractor={(item) => item.name}
         style={styles.list}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );
@@ -75,7 +65,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: Colors.WHITE,
+    color: Colors.BLACK,
     marginBottom: 20,
   },
   list: {
@@ -101,4 +91,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.GREY,
   },
-})
+  toggleButton: {
+    padding: 5,
+    borderRadius: 5,
+  },
+  toggleButtonText: {
+    color: Colors.WHITE,
+    fontSize: 14,
+  },
+});

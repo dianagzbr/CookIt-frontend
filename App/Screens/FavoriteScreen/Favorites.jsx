@@ -16,9 +16,6 @@ export default function Favorites() {
                 }}>
                     Favoritos
                 </Text>
-                <View style={{marginTop: 15, flex:1}}>
-                    <RecipeCard/>
-                </View>
             </View>
         </View>
     )
