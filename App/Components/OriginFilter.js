@@ -1,50 +1,52 @@
 import { StyleSheet, Text, View, ScrollView, Pressable } from "react-native";
 import React from "react";
-import { categories } from "../Utils/Constants";
 import Colors from "../Utils/Colors";
+import { recipeData } from "../Utils/Constants";
 
-const CategoriesFilter = ({ selectedCategory, onSelectCategory }) => {
-    const handleCategoryPress = (category) => {
-        if (selectedCategory === category) {
-            onSelectCategory(null); // Deselect if already selected
+const OriginFilter = ({ selectedOrigin, onSelectOrigin }) => {
+    const handleOriginPress = (origin) => {
+        if (selectedOrigin === origin) {
+            onSelectOrigin(null); // Deselect if already selected
         } else {
-            onSelectCategory(category); // Select new category
+            onSelectOrigin(origin); // Select new origin
         }
     };
+
+    const origins = Array.from(new Set(recipeData.map(recipe => recipe.origen_receta)));
 
     return (
         <View>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <Pressable 
-                    onPress={() => handleCategoryPress(null)} 
+                    onPress={() => handleOriginPress(null)} 
                     style={{ 
-                        ...styles.categoryButton, 
-                        backgroundColor: selectedCategory === null ? Colors.SECONDARY : Colors.PRIMARY 
+                        ...styles.originButton, 
+                        backgroundColor: selectedOrigin === null ? Colors.SECONDARY : Colors.PRIMARY 
                     }}
                 >
                     <Text style={{ 
-                        color: selectedCategory === null ? Colors.WHITE : Colors.BLACK, 
+                        color: selectedOrigin === null ? Colors.WHITE : Colors.BLACK, 
                         fontSize: 18, 
                         fontWeight: 'bold' 
                     }}>
                         Todos
                     </Text>
                 </Pressable>
-                {categories.map((category, index) => (
+                {origins.map((origin, index) => (
                     <Pressable 
                         key={index} 
-                        onPress={() => handleCategoryPress(category.category)}
+                        onPress={() => handleOriginPress(origin)}
                         style={{ 
-                            ...styles.categoryButton, 
-                            backgroundColor: selectedCategory === category.category ? Colors.SECONDARY : Colors.PRIMARY 
+                            ...styles.originButton, 
+                            backgroundColor: selectedOrigin === origin ? Colors.SECONDARY : Colors.PRIMARY 
                         }}
                     >
                         <Text style={{ 
-                            color: selectedCategory === category.category ? Colors.WHITE : Colors.BLACK, 
+                            color: selectedOrigin === origin ? Colors.WHITE : Colors.BLACK, 
                             fontSize: 18, 
                             fontWeight: 'normal' 
                         }}>
-                            {category.category}
+                            {origin}
                         </Text>
                     </Pressable>
                 ))}
@@ -53,10 +55,10 @@ const CategoriesFilter = ({ selectedCategory, onSelectCategory }) => {
     );
 };
 
-export default CategoriesFilter;
+export default OriginFilter;
 
 const styles = StyleSheet.create({
-    categoryButton: {
+    originButton: {
         marginRight: 27,
         borderRadius: 25,
         paddingHorizontal: 16,
