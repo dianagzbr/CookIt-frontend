@@ -10,6 +10,7 @@ import Comments from "../Screens/CommentsScreen/Comments";
 import Profile from "../Screens/ProfileScreen/Profile";
 import AccountActivation from "../Screens/AccountActivation/AccountActivation";
 import EditRecipeScreen from "../Screens/Recipe/EditRecipe";
+import CreateWeeklyPlanning from "../Screens/WeeklyPlanningScreen/CreateWeeklyPlanning";
 
 const Stack = createStackNavigator();
 
@@ -35,6 +36,16 @@ const StackNavigation = () => {
           headerStyle: { backgroundColor: "#f3e4d1" },
           headerTitleAlign: "center",
           title: "Activar Cuenta",
+          headerBackVisible: false
+        }}
+      />
+      <Stack.Screen
+        name="createweek"
+        component={CreateWeeklyPlanning}
+        options={{
+          headerStyle: { backgroundColor: "#f3e4d1" },
+          headerTitleAlign: "center",
+          title: "Crear planeacion semanal",
           headerBackVisible: false
         }}
       />
