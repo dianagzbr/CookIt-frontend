@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import Login from "../Screens/LoginScreen/Login";
 import Signup from "../Screens/SignupScreen/Signup";
@@ -9,6 +10,7 @@ import DrawerNavigation from "./DrawerNavigation";
 import Comments from "../Screens/CommentsScreen/Comments";
 import Profile from "../Screens/ProfileScreen/Profile";
 import AccountActivation from "../Screens/AccountActivation/AccountActivation";
+import EditRecipeScreen from "../Screens/Recipe/EditRecipe";
 import CreateWeeklyPlanning from "../Screens/WeeklyPlanningScreen/CreateWeeklyPlanning";
 
 const Stack = createStackNavigator();
@@ -72,6 +74,11 @@ const StackNavigation = () => {
         name="profile"
         component={Profile}
         options={{title:'Perfil de usuario'}}
+      />
+      <Stack.Screen
+        name="editRecipe"
+        component={EditRecipeScreen}
+        options={{title:'Editar Receta'}}
       />
     </Stack.Navigator>
   );

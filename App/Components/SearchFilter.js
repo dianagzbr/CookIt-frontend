@@ -4,18 +4,20 @@ import Colors from "../Utils/Colors";
 import { FontAwesome } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
 
-const SearchFilter = ({ icon, placeholder, filterIcon, onSearch }) => {
+const SearchFilter = ({ icon, placeholder, filterIcon, onSearch, onFilterPress }) => {
     return (
         <View style={styles.searchContainer}>
             <View style={styles.searchBarStyle}>
                 <FontAwesome name={icon} size={28} color={Colors.BLACK} />
-                <TextInput 
-                    style={styles.searchText} 
-                    placeholder={placeholder} 
+                <TextInput
+                    style={styles.searchText}
+                    placeholder={placeholder}
                     onChangeText={onSearch}
                 />
             </View>
-            <FontAwesome name={filterIcon} size={26} color={Colors.BLACK} />
+            <TouchableOpacity onPress={onFilterPress}>
+                <FontAwesome name={filterIcon} size={26} color={Colors.BLACK} />
+            </TouchableOpacity>
         </View>
     );
 };
@@ -24,7 +26,7 @@ export default SearchFilter;
 
 const styles = StyleSheet.create({
     searchContainer: {
-        backgroundColor: Colors.WHITE, 
+        backgroundColor: Colors.WHITE,
         flexDirection: "row",
         paddingVertical: 16,
         borderBottomLeftRadius: 25,
@@ -39,13 +41,13 @@ const styles = StyleSheet.create({
         elevation: 5
     },
     searchBarStyle: {
-        flexDirection: "row", 
-        flex: 1, 
+        flexDirection: "row",
+        flex: 1,
         alignItems: "center"
     },
     searchText: {
-        paddingLeft: 10, 
-        fontSize: 16, 
+        paddingLeft: 10,
+        fontSize: 16,
         color: Colors.GREY
     }
 });

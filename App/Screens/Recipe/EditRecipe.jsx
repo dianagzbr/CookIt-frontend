@@ -1,50 +1,26 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, Alert } from "react-native";
-import * as ImagePicker from "expo-image-picker";
-import Colors from "../../Utils/Colors";
-import { Picker } from "@react-native-picker/picker";
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, Alert } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import Colors from '../../Utils/Colors';
+import { Picker } from '@react-native-picker/picker';
 
-export default function AddRecipeScreen() {
-    const [recipeName, setRecipeName] = useState("");
-    const [ingredients, setIngredients] = useState("");
-    const [instructions, setInstructions] = useState("");
-    const [image, setImage] = useState(null);
-    const [calories, setCalories] = useState("");
-    const [prepTime, setPrepTime] = useState("");
-    const [origin, setOrigin] = useState("");
-    const [difficulty, setDifficulty] = useState("");
-    const [category, setCategory] = useState("");
+const EditRecipeScreen = ({ route, navigation }) => {
+    const { recipe } = route.params;
+    const [recipeName, setRecipeName] = useState(recipe.name);
+    const [ingredients, setIngredients] = useState(recipe.ingredients || '');
+    const [instructions, setInstructions] = useState(recipe.instructions || '');
+    const [image, setImage] = useState(recipe.image);
+    const [calories, setCalories] = useState(recipe.calories || '');
+    const [prepTime, setPrepTime] = useState(recipe.prepTime || '');
+    const [origin, setOrigin] = useState(recipe.origin || '');
+    const [difficulty, setDifficulty] = useState(recipe.difficulty || '');
+    const [category, setCategory] = useState(recipe.category || '');
 
-    const handleAddRecipe = () => {
-        // Validación para asegurarse de que ningún campo esté vacío
-        if (
-            !recipeName ||
-            !ingredients ||
-            !instructions ||
-            !calories ||
-            !prepTime ||
-            !origin ||
-            !difficulty ||
-            !category ||
-            !image
-        ) {
-            Alert.alert("Error", "Por favor completa todos los campos.");
-            return;
-        }
+    const handleSaveRecipe = () => {
+        //lógica para actualizar la receta en tu base de datos o realizar cualquier acción necesaria
 
-        // Aquí puedes agregar la lógica para guardar la receta en tu base de datos o realizar cualquier acción necesaria
-        setRecipeName("");
-        setIngredients("");
-        setInstructions("");
-        setImage(null);
-        setCalories("");
-        setPrepTime("");
-        setOrigin("");
-        setDifficulty("");
-        setCategory("");
-
-        console.log("Receta añadida:", { recipeName, ingredients, instructions, image });
-        Alert.alert("Receta añadida", 'Se ha añadido la receta con éxito');
+        Alert.alert('Receta guardada', 'Se ha guardado la receta con éxito.');
+        navigation.goBack();
     };
 
     const pickImage = async () => {
@@ -56,21 +32,17 @@ export default function AddRecipeScreen() {
                 quality: 1,
             });
 
-            console.log("Resultado de la selección de imagen:", result);
-
-            if (!result.canceled) {
-                console.log("URI de la imagen seleccionada:", result.uri);
+            if (!result.cancelled) {
                 setImage(result.assets[0].uri);
             }
         } catch (error) {
-            console.error("Error al seleccionar la imagen:", error);
-            Alert.alert("Error", "Hubo un error al seleccionar la imagen. Por favor, inténtalo de nuevo.");
+            Alert.alert('Error', 'Hubo un error al seleccionar la imagen. Por favor, inténtalo de nuevo.');
         }
     };
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            <Text style={styles.title}>Añadir Receta</Text>
+            <Text style={styles.title}>Editar Receta</Text>
             {image && <Image source={{ uri: image }} style={styles.image} />}
             <TouchableOpacity style={styles.pickImageButton} onPress={pickImage}>
                 <Text style={styles.pickImageText}>Seleccionar Imagen</Text>
@@ -133,25 +105,22 @@ export default function AddRecipeScreen() {
                     style={styles.picker}
                 >
                     <Picker.Item label="Selecciona una categoría" value="" />
-                    <Picker.Item label="categoria 1" value="categoria 1" />
-                    <Picker.Item label="categoria 2" value="categoria 2" />
-                    <Picker.Item label="categoria 3" value="categoria 3" />
-                    {/*<Picker.Item label="Desayuno" value="Desayuno" />
+                    <Picker.Item label="Desayuno" value="Desayuno" />
                     <Picker.Item label="Comida" value="Comida" />
                     <Picker.Item label="Cena" value="Cena" />
                     <Picker.Item label="Merienda" value="Merienda" />
                     <Picker.Item label="Postre" value="Postre" />
                     <Picker.Item label="Entrada" value="Entrada" />
                     <Picker.Item label="Bebida" value="Bebida" />
-                    <Picker.Item label="Otro" value="Otro" />*/}
+                    <Picker.Item label="Otro" value="Otro" />
                 </Picker>
             </View>
-            <TouchableOpacity style={styles.button} onPress={handleAddRecipe}>
-                <Text style={styles.buttonText}>Añadir Receta</Text>
+            <TouchableOpacity style={styles.button} onPress={handleSaveRecipe}>
+                <Text style={styles.buttonText}>Guardar Receta</Text>
             </TouchableOpacity>
         </ScrollView>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -161,7 +130,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 24,
-        fontWeight: "bold",
+        fontWeight: 'bold',
         marginBottom: 20,
     },
     input: {
@@ -174,27 +143,27 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.SECONDARY,
         padding: 15,
         borderRadius: 10,
-        alignItems: "center",
+        alignItems: 'center',
     },
     buttonText: {
         color: Colors.WHITE,
         fontSize: 18,
-        fontWeight: "bold",
+        fontWeight: 'bold',
     },
     pickImageButton: {
         backgroundColor: Colors.SECONDARY,
         padding: 15,
         borderRadius: 10,
-        alignItems: "center",
+        alignItems: 'center',
         marginBottom: 20,
     },
     pickImageText: {
         color: Colors.WHITE,
         fontSize: 18,
-        fontWeight: "bold",
+        fontWeight: 'bold',
     },
     image: {
-        width: "100%",
+        width: '100%',
         height: 200,
         marginBottom: 20,
         borderRadius: 10,
@@ -207,5 +176,7 @@ const styles = StyleSheet.create({
     picker: {
         height: 50,
         width: '100%',
-    }
+    },
 });
+
+export default EditRecipeScreen;

@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image, ScrollView, Alert} from "react-native";
-import react from "react";
+import React, { useState } from "react";
 import Colors from "../../Utils/Colors";
 import {FontAwesome} from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -7,7 +7,8 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 const RecipeDetails = ({ route }) => {
     const navigation = useNavigation();
-
+    const [isFavorite, setIsFavorite] = useState(false);
+    
     // Recupera los datos de la receta pasados desde la pantalla anterior
     const { item } = route.params;
   
@@ -18,7 +19,9 @@ const RecipeDetails = ({ route }) => {
 
     const handleFavoritePress = () => {
         //logica para añadir la receta
-        Alert.alert("Receta agregada a favoritos", `Has agregado ${item.nombre_receta} a tus favoritos.`);
+        setIsFavorite(!isFavorite);
+        const action = isFavorite ? 'eliminada de' : 'añadida a';
+        Alert.alert(`Receta ${action} favoritos`, `Has ${action} ${item.nombre_receta} a tus favoritos.`);
     }
     
     return (
@@ -26,12 +29,12 @@ const RecipeDetails = ({ route }) => {
         <View>
             {/* Muestra la imagen de la receta */}
             <Image
-                source={item.imagenes[0].imagen} // Suponemos que solo mostramos la primera imagen
+                source={{uri: item.imagenes[1].imagen}} // Suponemos que solo mostramos la primera imagen
                 style={styles.image}
             />
             <View style={styles.favoriteIcon}>
                 <TouchableOpacity onPress={handleFavoritePress}>
-                <FontAwesome name="heart" size={24} color={Colors.RED} />
+                <FontAwesome name={isFavorite ? 'heart' : 'heart-o'} size={24} color={Colors.RED} />
                 </TouchableOpacity>
             </View>
             {/* Contenedor transparente para el nombre de la receta */}
@@ -56,7 +59,7 @@ const RecipeDetails = ({ route }) => {
                 <View style={styles.info}>
                 {/* Icono de tiempo */}
                     <FontAwesome name="clock-o" style={{margin: 10}} size={25} color={Colors.BLACK} />
-                    <Text style={styles.text}>{`${item.tiempo}`}</Text>
+                    <Text style={styles.text}>{`${item.tiempo_preparacion}`}</Text>
                 </View>
                 
                 <View style={styles.info}>
@@ -69,9 +72,12 @@ const RecipeDetails = ({ route }) => {
             <View style={{paddingHorizontal:10}}>
                 {/* Muestra los pasos de preparación */}
                 <Text style={styles.sectionTitle}>Ingredientes</Text>
-                <Text style={styles.ingredients}>{item.ingredientes}</Text>
-                <Text style={styles.sectionTitle}>Pasos de preparación</Text>
-                <Text style={styles.steps}>{item.pasos}</Text>
+                    {item.ingredientes.map((ingrediente, index) => (
+                        <Text key={index} style={styles.ingredientItem}>{ingrediente.nombre_ingrediente}</Text>
+                    ))}
+                    <Text style={styles.sectionTitle}>Pasos de preparación</Text>
+                    <Text style={styles.stepItem}>{item.pasos}</Text>
+                    
             </View>
         </View>
     </ScrollView>
