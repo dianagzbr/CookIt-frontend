@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, Alert, } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Colors from "../../Utils/Colors";
 import { Picker } from "@react-native-picker/picker";
@@ -16,8 +16,23 @@ export default function AddRecipeScreen() {
     const [category, setCategory] = useState("");
 
     const handleAddRecipe = () => {
-        // Aquí puedes agregar la lógica para guardar la receta en tu base de datos o realizar cualquier acción necesaria
+        // Validación para asegurarse de que ningún campo esté vacío
+        if (
+            !recipeName ||
+            !ingredients ||
+            !instructions ||
+            !calories ||
+            !prepTime ||
+            !origin ||
+            !difficulty ||
+            !category ||
+            !image
+        ) {
+            Alert.alert("Error", "Por favor completa todos los campos.");
+            return;
+        }
 
+        // Aquí puedes agregar la lógica para guardar la receta en tu base de datos o realizar cualquier acción necesaria
         setRecipeName("");
         setIngredients("");
         setInstructions("");
@@ -29,7 +44,7 @@ export default function AddRecipeScreen() {
         setCategory("");
 
         console.log("Receta añadida:", { recipeName, ingredients, instructions, image });
-        Alert.alert("Receta añadida", 'Se ha añadido la receta con exito');
+        Alert.alert("Receta añadida", 'Se ha añadido la receta con éxito');
     };
 
     const pickImage = async () => {
