@@ -103,32 +103,38 @@ export default function WeekPlanning({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {!isWeeklyPlanning ? (
-        <View style={styles.content}>
-          <Text>No hay ninguna planeacion semanal</Text>
-          <Button
-            onPress={() =>
-              navigation.navigate("createweek", { token, userData })
-            }
-          >
-            Agregar una planeacion
-          </Button>
-        </View>
+      {token ? (
+        <React.Fragment>
+          {!isWeeklyPlanning ? (
+            <View style={styles.content}>
+              <Text>No hay ninguna planeacion semanal</Text>
+              <Button
+                onPress={() =>
+                  navigation.navigate("createweek", { token, userData })
+                }
+              >
+                Agregar una planeacion
+              </Button>
+            </View>
+          ) : (
+            <View style={styles.content}>
+              <FlatList
+                data={getPlanningData()}
+                renderItem={renderDay}
+                keyExtractor={(item) => item.dayName}
+              />
+              <Button
+                onPress={() =>
+                  navigation.navigate("createweek", { token, userData })
+                }
+              >
+                Eliminar y agregar una nueva
+              </Button>
+            </View>
+          )}
+        </React.Fragment>
       ) : (
-        <View style={styles.content}>
-          <FlatList
-            data={getPlanningData()}
-            renderItem={renderDay}
-            keyExtractor={(item) => item.dayName}
-          />
-          <Button
-            onPress={() =>
-              navigation.navigate("createweek", { token, userData })
-            }
-          >
-            Eliminar y agregar una nueva
-          </Button>
-        </View>
+        <Text>Necesitas iniciar sesion</Text>
       )}
     </View>
   );
