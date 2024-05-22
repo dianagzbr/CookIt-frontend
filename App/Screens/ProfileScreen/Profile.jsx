@@ -56,7 +56,7 @@ const ProfileScreen = ({ navigation }) => {
     }
 
     const updateUserData = async () => {
-      const url = "https://cookit-j5x3.onrender.com/auth/users/me/"
+      const url = "https://cookit-j5x3.onrender.com/auth/users/"
 
       const response = await fetch(url, {
         method: "PATCH",

@@ -9,7 +9,7 @@ const Header = ({headerText, headerIcon}) => {
     const navigation = useNavigation();
     return(
         <View style={{flexDirection:"row"}}>
-            <Text style={{ textAlign: 'center', flex:1, fontSize:28, fontWeight:"700"}}>
+            <Text style={{ textAlign: 'center', flex:1, fontSize:30, fontWeight:"700"}}>
                 {headerText}
             </Text>
             <FontAwesome name={headerIcon} size={24} color={Colors.BLACK} />

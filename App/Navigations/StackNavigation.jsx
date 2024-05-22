@@ -68,7 +68,7 @@ const StackNavigation = () => {
       <Stack.Screen
         name="comments"
         component={Comments}
-        options={{title:'Comentarios y calificación'}}
+        options={{title:'Comentarios'}}
       />
       <Stack.Screen
         name="profile"

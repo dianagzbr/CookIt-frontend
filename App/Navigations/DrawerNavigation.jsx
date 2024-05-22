@@ -11,6 +11,7 @@ import WeekPlanning from "../Screens/WeeklyPlanningScreen/WeekPlnn";
 import Colors from "../Utils/Colors";
 import MyRecipes from "../Screens/Recipe/MyRecipes";
 import AddRecipe from "../Screens/Recipe/AddRecipe";
+import Login from "../Screens/LoginScreen/Login";
 
 const Drawer = createDrawerNavigator();
 

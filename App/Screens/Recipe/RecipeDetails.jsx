@@ -24,9 +24,8 @@ const RecipeDetails = ({ route }) => {
   const { item } = route.params;
 
   const handleViewComments = () => {
-    //Navegacion a la pantalla de comentarios y calificaciones
-    navigation.navigate("comments", { recipeId: item.id });
-  };
+    navigation.navigate('comments', { recipeId: item.id, comments: item.comentarios });
+};
 
   const handleFavoritePress = async () => {
     if (!userToken) {
@@ -141,7 +140,7 @@ const RecipeDetails = ({ route }) => {
               {item.calificacion}
             </Text>
             <TouchableOpacity onPress={handleViewComments}>
-              <FontAwesome name="star" size={30} color={Colors.YELLOW} />
+                <FontAwesome name="comments" size={30} color={Colors.WHITE} />
             </TouchableOpacity>
           </View>
         </View>
@@ -277,4 +276,6 @@ const styles = StyleSheet.create({
   },
 });
 
+
 export default RecipeDetails;
+
