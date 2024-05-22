@@ -314,18 +314,6 @@ export default function AddRecipeScreen() {
               <Picker.Item label="Difícil" value="Difícil" />
             </Picker>
           </View>
-          <View style={styles.pickerContainer}>
-            <Picker
-              selectedValue={formData.category}
-              onValueChange={(value) => handleChange("category", value)}
-              style={styles.picker}
-            >
-              <Picker.Item label="Selecciona una categoría" value="" />
-              <Picker.Item label="categoria 1" value="1" />
-              <Picker.Item label="categoria 2" value="2" />
-              <Picker.Item label="categoria 3" value="3" />
-            </Picker>
-          </View>
           <TouchableOpacity style={styles.button} onPress={handleAddRecipe}>
             <Text style={styles.buttonText}>Añadir Receta</Text>
           </TouchableOpacity>
