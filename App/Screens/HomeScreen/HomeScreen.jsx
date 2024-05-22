@@ -19,6 +19,7 @@ import { ActivityIndicator } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/native";
+import {FontAwesome} from '@expo/vector-icons';
 
 const HomeScreen = ({ navigation }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -97,12 +98,13 @@ const HomeScreen = ({ navigation }) => {
     <SafeAreaView
       style={{ flex: 1, padding: 15, backgroundColor: Colors.PRIMARY }}
     >
-      <Header headerText={"CookIt!"} headerIcon={"bell-o"} />
-      {isAuthenticated && (
-        <TouchableOpacity onPress={logout}>
-          <Text>Cerrar sesion</Text>
-        </TouchableOpacity>
-      )}
+       <Header 
+        headerText={"CookIt!"} 
+        headerIcon={"bell-o"} 
+        onIconPress={() => {/* Handle notification icon press */}} 
+        logoutIcon={"sign-out"} 
+        onLogoutPress={logout} 
+      />
       <SearchFilter
         icon="search"
         placeholder={"Buscar receta"}

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, RefreshControl, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../../Utils/Colors';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const MyRecipesScreen = ({ navigation }) => {
     const [userRecipes, setUserRecipes] = useState([]);
     const [token, setToken] = useState("");
     const [userData, setUserData] = useState(null);
+    const [refreshing, setRefreshing] = useState(false);
 
     useEffect(() => {
         const getUserToken = async () => {
@@ -68,22 +70,100 @@ const MyRecipesScreen = ({ navigation }) => {
         fetchUserRecipes();
     }, [userData]);
 
+    const onRefresh = async () => {
+        setRefreshing(true);
+        try {
+            const response = await fetch('https://cookit-j5x3.onrender.com/recetas/', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log("Fetched recipes on refresh:", data);
+                const filteredRecipes = data.filter(recipe => recipe.usuario.id === userData.id);
+                console.log("Filtered recipes on refresh:", filteredRecipes);
+                setUserRecipes(filteredRecipes);
+            } else {
+                console.error('Error fetching recipes on refresh:', response.statusText);
+            }
+        } catch (error) {
+            console.error("Error fetching user recipes on refresh:", error);
+        } finally {
+            setRefreshing(false);
+        }
+    };
+
+    const handleDelete = async (recipeId) => {
+        Alert.alert(
+            'Eliminar receta',
+            '¿Estás seguro de que quieres eliminar esta receta?',
+            [
+                {
+                    text: 'Cancelar',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Eliminar',
+                    onPress: async () => {
+                        try {
+                            const response = await fetch(`https://cookit-j5x3.onrender.com/recetas/${recipeId}/`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': 'JWT ' + token,
+                                },
+                            });
+
+                            if (response.ok) {
+                                setUserRecipes(userRecipes.filter(recipe => recipe.id !== recipeId));
+                                Alert.alert('¡Éxito!', 'Receta eliminada correctamente.');
+                            } else {
+                                Alert.alert('Error', 'Hubo un error al eliminar la receta.');
+                            }
+                        } catch (error) {
+                            console.error("Error deleting recipe:", error);
+                            Alert.alert('Error', 'Hubo un error al eliminar la receta.');
+                        }
+                    },
+                },
+            ],
+            { cancelable: false }
+        );
+    };
+
     return (
-        <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView
+            contentContainerStyle={styles.container}
+            refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+        >
             {userRecipes.map((recipe) => (
-                <TouchableOpacity 
-                    key={recipe.id} 
-                    style={styles.recipeContainer}
-                    onPress={() => navigation.navigate('recipe', { item:recipe })}
-                >
-                    {recipe.imagenes.length > 0 && (
-                        <Image source={{ uri: recipe.imagenes[0].imagen }} style={styles.recipeImage} />
-                    )}
-                    <View style={styles.recipeDetails}>
-                        <Text style={styles.recipeName}>{recipe.nombre_receta}</Text>
-                        <Text style={styles.recipeInfo}>{recipe.tipo_comida} - {recipe.dificultad}</Text>
+                <View key={recipe.id} style={styles.recipeContainer}>
+                    <TouchableOpacity 
+                        style={styles.recipeInfo}
+                        onPress={() => navigation.navigate('recipe', { item: recipe })}
+                    >
+                        {recipe.imagenes.length > 0 && (
+                            <Image source={{ uri: recipe.imagenes[0].imagen }} style={styles.recipeImage} />
+                        )}
+                        <View style={styles.recipeDetails}>
+                            <Text style={styles.recipeName}>{recipe.nombre_receta}</Text>
+                            <Text style={styles.recipeInfoText}>{recipe.tipo_comida} - {recipe.dificultad}</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <View style={styles.iconContainer}>
+                        <TouchableOpacity onPress={() => navigation.navigate('editRecipe', { item: recipe })}>
+                            <Icon name="edit" size={24} color={Colors.WHITE} style={styles.icon} />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => handleDelete(recipe.id)}>
+                            <Icon name="trash" size={24} color={Colors.WHITE} style={styles.icon} />
+                        </TouchableOpacity>
                     </View>
-                </TouchableOpacity>
+                </View>
             ))}
         </ScrollView>
     );
@@ -102,6 +182,12 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginBottom: 15,
         overflow: 'hidden',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    recipeInfo: {
+        flexDirection: 'row',
+        flex: 1,
     },
     recipeImage: {
         width: 100,
@@ -118,9 +204,17 @@ const styles = StyleSheet.create({
         color: Colors.WHITE,
         marginBottom: 5,
     },
-    recipeInfo: {
+    recipeInfoText: {
         fontSize: 14,
         color: Colors.WHITE,
+    },
+    iconContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+    },
+    icon: {
+        marginHorizontal: 10,
     },
 });
 
