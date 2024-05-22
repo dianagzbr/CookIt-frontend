@@ -3,48 +3,117 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image,
 import * as ImagePicker from "expo-image-picker";
 import Colors from "../../Utils/Colors";
 import { Picker } from "@react-native-picker/picker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function AddRecipeScreen() {
-    const [recipeName, setRecipeName] = useState("");
-    const [ingredients, setIngredients] = useState("");
-    const [instructions, setInstructions] = useState("");
-    const [image, setImage] = useState(null);
-    const [calories, setCalories] = useState("");
-    const [prepTime, setPrepTime] = useState("");
-    const [origin, setOrigin] = useState("");
-    const [difficulty, setDifficulty] = useState("");
-    const [category, setCategory] = useState("");
+    const [nombreReceta, setNombreReceta] = useState("");
+    const [ingredientes, setIngredientes] = useState("");
+    const [instrucciones, setInstrucciones] = useState("");
+    const [imagen, setImagen] = useState(null);
+    const [calorias, setCalorias] = useState("");
+    const [tiempoPreparacion, setTiempoPreparacion] = useState("");
+    const [origen, setOrigen] = useState("");
+    const [dificultad, setDificultad] = useState("");
+    const [categoria, setCategoria] = useState("");
 
-    const handleAddRecipe = () => {
+    const handleAddRecipe = async () => {
         // Validación para asegurarse de que ningún campo esté vacío
-        if (
-            !recipeName ||
-            !ingredients ||
-            !instructions ||
-            !calories ||
-            !prepTime ||
-            !origin ||
-            !difficulty ||
-            !category ||
-            !image
-        ) {
-            Alert.alert("Error", "Por favor completa todos los campos.");
+        if (!nombreReceta) {
+            Alert.alert("Error", "Por favor, completa el nombre de la receta.");
+            return;
+        }
+        if (!ingredientes) {
+            Alert.alert("Error", "Por favor, completa los ingredientes.");
+            return;
+        }
+        if (!instrucciones) {
+            Alert.alert("Error", "Por favor, completa las instrucciones.");
+            return;
+        }
+        if (!calorias) {
+            Alert.alert("Error", "Por favor, completa las calorías.");
+            return;
+        }
+        if (!tiempoPreparacion) {
+            Alert.alert("Error", "Por favor, completa el tiempo de preparación.");
+            return;
+        }
+        if (!origen) {
+            Alert.alert("Error", "Por favor, completa el origen del platillo.");
+            return;
+        }
+        if (!dificultad) {
+            Alert.alert("Error", "Por favor, selecciona la dificultad.");
+            return;
+        }
+        if (!categoria) {
+            Alert.alert("Error", "Por favor, selecciona una categoría.");
+            return;
+        }
+        if (!imagen) {
+            Alert.alert("Error", "Por favor, selecciona una imagen.");
             return;
         }
 
-        // Aquí puedes agregar la lógica para guardar la receta en tu base de datos o realizar cualquier acción necesaria
-        setRecipeName("");
-        setIngredients("");
-        setInstructions("");
-        setImage(null);
-        setCalories("");
-        setPrepTime("");
-        setOrigin("");
-        setDifficulty("");
-        setCategory("");
+        // Obtener el token del usuario
+        const token = await AsyncStorage.getItem("accessToken");
+        if (!token) {
+            Alert.alert("Error", "No se ha encontrado el token de usuario. Por favor, inicia sesión.");
+            return;
+        }
 
-        console.log("Receta añadida:", { recipeName, ingredients, instructions, image });
-        Alert.alert("Receta añadida", 'Se ha añadido la receta con éxito');
+        // Preparar los datos de la receta en un FormData
+        const formData = new FormData();
+        formData.append('nombre_receta', nombreReceta);
+        formData.append('ingredientes', ingredientes);
+        formData.append('instrucciones', instrucciones);
+        formData.append('calorias', calorias);
+        formData.append('tiempo_preparacion', tiempoPreparacion);
+        formData.append('origen', origen);
+        formData.append('dificultad', dificultad);
+        formData.append('categoria', categoria);
+
+        // Añadir la imagen al FormData
+        const uriParts = imagen.split('.');
+        const fileType = uriParts[uriParts.length - 1];
+        formData.append('imagen', {
+            uri: imagen,
+            name: `photo.${fileType}`,
+            type: `image/${fileType}`,
+        });
+
+        try {
+            // Enviar la receta a la API
+            const response = await fetch('https://cookit-j5x3.onrender.com/recetas/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `JWT ${token}`
+                },
+                body: formData
+            });
+
+            if (response.ok) {
+                Alert.alert("Receta añadida", 'Se ha añadido la receta con éxito');
+                setNombreReceta("");
+                setIngredientes("");
+                setInstrucciones("");
+                setImagen(null);
+                setCalorias("");
+                setTiempoPreparacion("");
+                setOrigen("");
+                setDificultad("");
+                setCategoria("");
+                console.log("Receta añadida:", formData);
+            } else {
+                const errorData = await response.json();
+                console.error("Error al añadir receta:", errorData);
+                Alert.alert("Error", 'Hubo un problema al añadir la receta.');
+            }
+        } catch (error) {
+            console.error("Error al enviar la receta:", error);
+            Alert.alert("Error", "Hubo un error al enviar la receta. Por favor, inténtalo de nuevo.");
+        }
     };
 
     const pickImage = async () => {
@@ -56,11 +125,8 @@ export default function AddRecipeScreen() {
                 quality: 1,
             });
 
-            console.log("Resultado de la selección de imagen:", result);
-
             if (!result.canceled) {
-                console.log("URI de la imagen seleccionada:", result.uri);
-                setImage(result.assets[0].uri);
+                setImagen(result.uri);
             }
         } catch (error) {
             console.error("Error al seleccionar la imagen:", error);
@@ -71,53 +137,53 @@ export default function AddRecipeScreen() {
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <Text style={styles.title}>Añadir Receta</Text>
-            {image && <Image source={{ uri: image }} style={styles.image} />}
+            {imagen && <Image source={{ uri: imagen }} style={styles.image} />}
             <TouchableOpacity style={styles.pickImageButton} onPress={pickImage}>
                 <Text style={styles.pickImageText}>Seleccionar Imagen</Text>
             </TouchableOpacity>
             <TextInput
                 style={styles.input}
                 placeholder="Nombre de la receta"
-                value={recipeName}
-                onChangeText={setRecipeName}
+                value={nombreReceta}
+                onChangeText={setNombreReceta}
             />
             <TextInput
                 style={[styles.input, { height: 100 }]}
                 placeholder="Ingredientes"
                 multiline
-                value={ingredients}
-                onChangeText={setIngredients}
+                value={ingredientes}
+                onChangeText={setIngredientes}
             />
             <TextInput
                 style={[styles.input, { height: 200 }]}
                 placeholder="Instrucciones de preparación"
                 multiline
-                value={instructions}
-                onChangeText={setInstructions}
+                value={instrucciones}
+                onChangeText={setInstrucciones}
             />
             <TextInput
                 style={styles.input}
                 placeholder="Calorías"
-                value={calories}
-                onChangeText={setCalories}
+                value={calorias}
+                onChangeText={setCalorias}
                 keyboardType="numeric"
             />
             <TextInput
                 style={styles.input}
                 placeholder="Tiempo de preparación"
-                value={prepTime}
-                onChangeText={setPrepTime}
+                value={tiempoPreparacion}
+                onChangeText={setTiempoPreparacion}
             />
             <TextInput
                 style={styles.input}
                 placeholder="Origen del platillo"
-                value={origin}
-                onChangeText={setOrigin}
+                value={origen}
+                onChangeText={setOrigen}
             />
             <View style={styles.pickerContainer}>
                 <Picker
-                    selectedValue={difficulty}
-                    onValueChange={(itemValue) => setDifficulty(itemValue)}
+                    selectedValue={dificultad}
+                    onValueChange={(itemValue) => setDificultad(itemValue)}
                     style={styles.picker}
                 >
                     <Picker.Item label="Selecciona la dificultad" value="" />
@@ -128,22 +194,14 @@ export default function AddRecipeScreen() {
             </View>
             <View style={styles.pickerContainer}>
                 <Picker
-                    selectedValue={category}
-                    onValueChange={(itemValue) => setCategory(itemValue)}
+                    selectedValue={categoria}
+                    onValueChange={(itemValue) => setCategoria(itemValue)}
                     style={styles.picker}
                 >
                     <Picker.Item label="Selecciona una categoría" value="" />
                     <Picker.Item label="categoria 1" value="categoria 1" />
                     <Picker.Item label="categoria 2" value="categoria 2" />
                     <Picker.Item label="categoria 3" value="categoria 3" />
-                    {/*<Picker.Item label="Desayuno" value="Desayuno" />
-                    <Picker.Item label="Comida" value="Comida" />
-                    <Picker.Item label="Cena" value="Cena" />
-                    <Picker.Item label="Merienda" value="Merienda" />
-                    <Picker.Item label="Postre" value="Postre" />
-                    <Picker.Item label="Entrada" value="Entrada" />
-                    <Picker.Item label="Bebida" value="Bebida" />
-                    <Picker.Item label="Otro" value="Otro" />*/}
                 </Picker>
             </View>
             <TouchableOpacity style={styles.button} onPress={handleAddRecipe}>
@@ -200,12 +258,5 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     pickerContainer: {
-        backgroundColor: Colors.WHITE,
-        borderRadius: 10,
-        marginBottom: 20,
-    },
-    picker: {
-        height: 50,
-        width: '100%',
-    }
-});
+        backgroundColor: Colors.WHITE,}
+})
