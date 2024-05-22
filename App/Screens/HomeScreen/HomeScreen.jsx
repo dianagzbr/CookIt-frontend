@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -18,6 +18,7 @@ import RecipeCard from "../../Components/RecipeCard";
 import { ActivityIndicator } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 
 const HomeScreen = ({ navigation }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -31,32 +32,31 @@ const HomeScreen = ({ navigation }) => {
   });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    const fetchRecipes = async () => {
-      setLoading(true);
-      try {
-        const url = "https://cookit-j5x3.onrender.com/recetas/";
-        const response = await fetch(url);
-        const result = await response.json();
-
-        if (response.ok) {
-          console.log("Datos recibidos: ", result);
-          setRecipes(result);
-        } else {
-          console.error("Error fetching recipes: ", result);
-        }
-      } catch (error) {
-        console.error("Error:", error);
-      } finally {
-        setLoading(false);
-      }
-
-      if (await AsyncStorage.getItem("accessToken")) {
-        setIsAuthenticated(true);
-      }
-    };
-    fetchRecipes();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+        const fetchRecipes = async () => {
+            setLoading(true);
+            try {
+              const url = "https://cookit-j5x3.onrender.com/recetas/";
+              const response = await fetch(url);
+              const result = await response.json();
+      
+              if (response.ok) {
+                setRecipes(result);
+              } else {
+              }
+            } catch (error) {
+            } finally {
+              setLoading(false);
+            }
+      
+            if (await AsyncStorage.getItem("accessToken")) {
+              setIsAuthenticated(true);
+            }
+          };
+          fetchRecipes();
+    }, [])
+  )
 
   const logout = async () => {
     await AsyncStorage.clear();

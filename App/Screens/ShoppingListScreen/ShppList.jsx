@@ -1,16 +1,27 @@
-import React, { useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import Colors from '../../Utils/Colors';
+import React, { useState, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+import Colors from "../../Utils/Colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Select from "react-native-picker-select"
 
 const ShoppingList = () => {
   const [shoppingList, setShoppingList] = useState([
-    { name: 'Leche', quantity: 1, unit: 'litro', bought: false },
-    { name: 'Huevos', quantity: 6, unit: 'unidades', bought: false },
-    { name: 'Pan', quantity: 1, unit: 'barra', bought: false },
-    { name: 'Manzanas', quantity: 3, unit: 'unidades', bought: false },
-    { name: 'Arroz', quantity: 500, unit: 'gramos', bought: false },
-    { name: 'Pollo', quantity: 800, unit: 'gramos', bought: false },
+    { name: "Leche", quantity: 1, unit: "litro", bought: false },
+    { name: "Huevos", quantity: 6, unit: "unidades", bought: false },
+    { name: "Pan", quantity: 1, unit: "barra", bought: false },
+    { name: "Manzanas", quantity: 3, unit: "unidades", bought: false },
+    { name: "Arroz", quantity: 500, unit: "gramos", bought: false },
+    { name: "Pollo", quantity: 800, unit: "gramos", bought: false },
   ]);
+  const [userToken, setUserToken] = useState(null);
+  const [userData, setUserData] = useState({});
 
   const toggleBought = (ingredientName) => {
     setShoppingList((prevShoppingList) =>
@@ -23,17 +34,47 @@ const ShoppingList = () => {
     );
   };
 
+  const getUserData = async () => {
+    const token = await AsyncStorage.getItem("accessToken");
+
+    if (token) {
+      setUserToken(token);
+
+      const url = "https://cookit-j5x3.onrender.com/auth/users/me/";
+      const response = await fetch(url, {
+        headers: {
+          Authorization: "JWT " + token,
+        },
+      });
+      const data = await response.json();
+
+      console.log(data.info.lista_compras)
+      setUserData(data.info.lista_compras);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      getUserData();
+    }, [])
+  );
+
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.listItem}>
       <View style={styles.itemContent}>
         <Text style={styles.itemName}>{item.name}</Text>
-        <Text style={styles.itemQuantity}>{item.quantity} {item.unit}</Text>
+        <Text style={styles.itemQuantity}>
+          {item.quantity} {item.unit}
+        </Text>
         <TouchableOpacity
           onPress={() => toggleBought(item.name)}
-          style={[styles.toggleButton, { backgroundColor: item.bought ? Colors.GREEN : Colors.SECONDARY }]}
+          style={[
+            styles.toggleButton,
+            { backgroundColor: item.bought ? Colors.GREEN : Colors.SECONDARY },
+          ]}
         >
           <Text style={styles.toggleButtonText}>
-            {item.bought ? 'Comprado' : 'Marcar como comprado'}
+            {item.bought ? "Comprado" : "Marcar como comprado"}
           </Text>
         </TouchableOpacity>
       </View>
@@ -42,14 +83,24 @@ const ShoppingList = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Lista de compras</Text>
-      <FlatList
-        data={shoppingList}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.name}
-        style={styles.list}
-        showsVerticalScrollIndicator={false}
-      />
+      {userToken ? (
+        <View>
+          <Text style={styles.title}>Lista de compras</Text>
+          <Select
+            onValueChange={(value) => console.log(value)}
+            items={[{ label: "pepe", value: 1 }]}
+          />
+          <FlatList
+            data={shoppingList}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.name}
+            style={styles.list}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
+      ) : (
+        <Text>No has iniciado sesion</Text>
+      )}
     </View>
   );
 };
@@ -64,7 +115,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: Colors.BLACK,
     marginBottom: 20,
   },
@@ -78,13 +129,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   itemContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   itemName: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: Colors.BLACK,
   },
   itemQuantity: {

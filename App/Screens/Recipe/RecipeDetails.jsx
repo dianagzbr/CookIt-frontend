@@ -115,7 +115,7 @@ const RecipeDetails = ({ route }) => {
         </ModalMessage>
         {/* Muestra la imagen de la receta */}
         <Image
-          source={{ uri: item.imagenes[1].imagen }} // Suponemos que solo mostramos la primera imagen
+          source={{ uri: item.imagenes[0].imagen }} // Suponemos que solo mostramos la primera imagen
           style={styles.image}
         />
         <View style={styles.favoriteIcon}>

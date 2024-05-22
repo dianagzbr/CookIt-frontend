@@ -17,7 +17,7 @@ const RecipeCard = ({ recipes }) => {
                         style={styles.card}
                     >
                         <Image 
-                            source={{ uri: item.imagenes[1].imagen }} 
+                            source={{ uri: item.imagenes[0].imagen }} 
                             style={styles.imageHS}
                         />
                         <Text style={{ fontWeight: 'bold', marginTop: 2 }}>

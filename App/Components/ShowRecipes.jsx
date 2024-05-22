@@ -38,7 +38,6 @@ const ShowRecipes = ({ ...props }) => {
           <Text>Cargando...</Text>
         ) : (
           <FlatList
-            contentContainerStyle={styles.recipes}
             data={recipes}
             renderItem={({ item }) => (
               <View style={styles.content}>
@@ -54,6 +53,7 @@ const ShowRecipes = ({ ...props }) => {
               </View>
             )}
             numColumns={2}
+            columnWrapperStyle={{ justifyContent: "space-evenly" }}
           />
         )}
       </View>
@@ -79,9 +79,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#EBDCC9",
     padding: 10,
     borderRadius: 5,
-    flex: 1,
     width: 150,
-    marginHorizontal: 10,
+    marginVertical: 10,
   },
   image: {
     width: "100%",

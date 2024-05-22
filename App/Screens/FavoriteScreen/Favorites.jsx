@@ -58,7 +58,6 @@ export default function Favorites({ navigation }) {
               Favoritos
             </Text>
             <FlatList
-              contentContainerStyle={styles.flatContainer}
               data={userData}
               renderItem={({ item }) => (
                 <View style={styles.mealContainer}>
@@ -82,6 +81,7 @@ export default function Favorites({ navigation }) {
                 </View>
               )}
               numColumns={2}
+              columnWrapperStyle={{ justifyContent: "space-evenly" }}
             />
           </View>
         </View>
@@ -111,10 +111,7 @@ const styles = StyleSheet.create({
     width: 150,
     padding: 20,
     borderRadius: 15,
-    marginHorizontal: 10,
-  },
-  flatContainer: {
-    flex: 1,
+    marginVertical: 10
   },
   image: {
     width: "90%",
