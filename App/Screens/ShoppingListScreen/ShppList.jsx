@@ -1,5 +1,4 @@
-import React, { useState, useCallback } from "react";
-import { useFocusEffect } from "@react-navigation/native";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,7 +8,6 @@ import {
 } from "react-native";
 import Colors from "../../Utils/Colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Select from "react-native-picker-select"
 
 const ShoppingList = () => {
   const [shoppingList, setShoppingList] = useState([
@@ -47,17 +45,13 @@ const ShoppingList = () => {
         },
       });
       const data = await response.json();
-
-      console.log(data.info.lista_compras)
-      setUserData(data.info.lista_compras);
+      setUserData(data.info.recetas_favoritas);
     }
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      getUserData();
-    }, [])
-  );
+  useEffect(() => {
+    getUserData();
+  }, []);
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.listItem}>
@@ -84,12 +78,8 @@ const ShoppingList = () => {
   return (
     <View style={styles.container}>
       {userToken ? (
-        <View>
+        <React.Fragment>
           <Text style={styles.title}>Lista de compras</Text>
-          <Select
-            onValueChange={(value) => console.log(value)}
-            items={[{ label: "pepe", value: 1 }]}
-          />
           <FlatList
             data={shoppingList}
             renderItem={renderItem}
@@ -97,9 +87,9 @@ const ShoppingList = () => {
             style={styles.list}
             showsVerticalScrollIndicator={false}
           />
-        </View>
+        </React.Fragment>
       ) : (
-        <Text>No has iniciado sesion</Text>
+        <Text>Necesitas iniciar sesion</Text>
       )}
     </View>
   );
